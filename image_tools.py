@@ -6,7 +6,7 @@ import eel
 
 class ImageToolbox():
 
-    def __init__(self, input_path='./',output_path='./output'):
+    def __init__(self, input_path='./input',output_path='./output'):
         self.max_res = 10000
         self.compression = 95
         self.output_path = output_path
@@ -54,28 +54,6 @@ class ImageToolbox():
 TOOLBOX = None
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input-path', type=str,
-                        help='path of input images', default="./")
-    parser.add_argument('--output-path', type=str,
-                        help='path of output images', default='./output')
-    args = parser.parse_args()
-    if not os.path.exists(args.input_path):
-        print('Cannot find input path: {0}'.format(args.input_path))
-        exit()
-    if not os.path.exists(args.output_path):
-        print('Cannot find output path: {0}. Creating...'.format(
-            args.output_path))
-        os.mkdir(args.output_path)
-        exit()
-    TOOLBOX = ImageToolbox(args.output_path)
-    TOOLBOX.input_path = args.input_path
-
-    eel.init('templates')
-
-    eel.start('index.html', size=(1000,600))
-
 @eel.expose
 def set_param(param:str, value):
     global TOOLBOX
@@ -102,4 +80,27 @@ def create_folder(path):
 @eel.expose
 def get_images():
     global TOOLBOX
-    return [im for im in os.listdir(TOOLBOX.input_path) if im.lower().endswith(('png','webp','jpg','jpeg'))]
+    return [os.path.join('../input/',im).replace('\\','/') for im in os.listdir(TOOLBOX.input_path) if im.lower().endswith(('png','webp','jpg','jpeg'))]
+    
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input-path', type=str,
+                        help='path of input images', default="./input")
+    parser.add_argument('--output-path', type=str,
+                        help='path of output images', default='./output')
+    args = parser.parse_args()
+    if not os.path.exists(args.input_path):
+        print('Cannot find input path: {0}'.format(args.input_path))
+        exit()
+    if not os.path.exists(args.output_path):
+        print('Cannot find output path: {0}. Creating...'.format(
+            args.output_path))
+        os.mkdir(args.output_path)
+        exit()
+    TOOLBOX = ImageToolbox(args.output_path)
+    TOOLBOX.input_path = args.input_path
+
+    eel.init('./build/')
+
+    eel.start('./ui/index.html', size=(1000,600))

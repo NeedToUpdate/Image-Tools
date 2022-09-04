@@ -12,11 +12,12 @@ const uglify = require("gulp-uglify");
 const minify = require("gulp-minifier");
 const watch = require("gulp-watch");
 
-const BUILDDIR = "./build/";
+const BUILDDIR = "./build/ui/";
 
 function render_css(resolve) {
   gulp
     .src("./src/css/*.scss")
+    .pipe(concat("main.css"))
     .pipe(sass({ includePaths: ["css"] }))
     .pipe(gulp.dest(BUILDDIR));
   resolve();
