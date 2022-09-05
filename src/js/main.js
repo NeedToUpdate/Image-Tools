@@ -11,40 +11,44 @@ function setImages(arr) {
   //     let newImage = template.content.cloneNode(true).childNodes[1];
   //     newImage.childNodes[1].src = src;
   //     imageContainer.appendChild(newImage);
-  //     allImages.push(src);
+  //
   //   });
+  allImages = arr;
   document.getElementById("image-desc").innerText = "Images found: " + arr.length;
 }
 
-let testImages = [
-  "../input/anna.jpg",
-  "../input/anna.png",
-  "../input/ant.jpg",
-  "../input/ant.png",
-  "../input/arceus.jpg",
-  "../input/arceus.png",
-  "../input/ariel.jpg",
-  "../input/ariel.png",
-  "../input/arlo.jpg",
-  "../input/arlo.png",
-  "../input/ash.jpg",
-  "../input/ash.png",
-  "../input/baby.jpg",
-  "../input/baby.png",
-  "../input/baby_groot.jpg",
-  "../input/baby_groot.png",
-];
-// eel.get_images()(setImages);
+// setImages(testImages);
 
-setImages(testImages);
-
-function changeParam(param, value) {}
+eel.get_images()(setImages);
+function changeParam(param, value) {
+  eel.set_param(param, value);
+}
 function refreshImages() {
-  document.getElementById("image-desc").innerText = "Images found: " + arr.length;
+  eel.get_images()(setImages);
 }
 function startConversion() {
+  document.getElementById("convert-btn").classList.add("disabled");
   document.getElementById("inputs-box").style.height = "85vmin";
-  document.getElementById("loading-bar");
+  document.getElementById("loading-bar").style.opacity = "";
+  document.getElementById("loading-bar").value = "0";
+  let total = 0;
+  console.log(allImages);
+  let parts = 100 / allImages.length || 0;
+  allImages.forEach((im, i) => {
+    requestAnimationFrame(() => {
+      eel.convert(im)(() => {
+        total += parts;
+        console.log(total);
+        document.getElementById("loading-bar").value = total + "";
+        if (i == allImages.length - 1) {
+          document.getElementById("inputs-box").style.height = "75vmin";
+          document.getElementById("loading-bar").style.opacity = 0;
+          document.getElementById("loading-bar").value = "0";
+          document.getElementById("convert-btn").classList.remove("disabled");
+        }
+      });
+    });
+  });
 }
 document.getElementById("max_res").value = "2100";
 document.getElementById("max_res_text").innerText = "None";
@@ -87,3 +91,4 @@ document.getElementById("convert-btn").addEventListener("click", startConversion
 document.getElementById("refresh-btn").addEventListener("click", refreshImages);
 
 document.getElementById("inputs-box").style.height = "75vmin";
+document.getElementById("loading-bar").style.opacity = 0;

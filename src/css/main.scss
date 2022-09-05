@@ -3,6 +3,7 @@
   padding: 0;
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
 }
 body,
 html {
@@ -99,16 +100,11 @@ html {
   border: 1px solid white;
 }
 #loading-bar::-moz-progress-bar,
+#loading-bar::-webkit-progress-value,
 #loading-bar::-webkit-progress-bar {
   background-color: white;
   border-radius: 0.3vmin;
 }
-#loading-bar::-webkit-progress-value {
-  background-color: blue;
-  border-radius: 7px;
-  box-shadow: 1px 1px 5px 3px rgba(255, 0, 0, 0.8);
-}
-
 .buttons {
   padding: 1rem;
 }
@@ -126,4 +122,10 @@ html {
     background-color: rgba(0, 178, 198, 0.5);
     border-color: rgb(174, 241, 248);
   }
+}
+
+.disabled {
+  border-color: rgba(120, 120, 120, 0.3);
+  color: rgba(120, 120, 120, 0.3);
+  pointer-events: none;
 }

@@ -12,7 +12,7 @@ const uglify = require("gulp-uglify");
 const minify = require("gulp-minifier");
 const watch = require("gulp-watch");
 
-const BUILDDIR = "./build/ui/";
+const BUILDDIR = "./web/ui/";
 
 function render_css(resolve) {
   gulp
@@ -40,6 +40,11 @@ function compile_page(resolve) {
     )
     .pipe(rename("index.html"))
     .pipe(gulp.dest(BUILDDIR));
+  resolve();
+}
+
+function move_images(resolve) {
+  gulp.src("./src/images/**/*").pipe(gulp.dest(BUILDDIR));
   resolve();
 }
 
@@ -78,7 +83,7 @@ function clear(resolve) {
 }
 
 function defaultTask(cb) {
-  gulp.series(clear, gulp.parallel(render_css, compile_page, combine_js))();
+  gulp.series(clear, gulp.parallel(render_css, compile_page, combine_js, move_images))();
   cb();
 }
 
