@@ -16,7 +16,7 @@ const BUILDDIR = "./web/ui/";
 
 function render_css(resolve) {
   gulp
-    .src("./src/css/*.scss")
+    .src("./web_src/css/*.scss")
     .pipe(concat("main.css"))
     .pipe(sass({ includePaths: ["css"] }))
     .pipe(gulp.dest(BUILDDIR));
@@ -25,18 +25,18 @@ function render_css(resolve) {
 
 function compile_page(resolve) {
   gulp
-    .src(path.join("./src/views/index.hbs"))
+    .src(path.join("./web_src/views/index.hbs"))
     .pipe(
       handlebars({ encoding: "utf8", debug: true, bustCache: true })
-        .partials("./src/views/[!index]*.hbs")
-        .partials("./src/views/components/*.hbs")
-        .helpers("./src/helpers/**/*.js")
+        .partials("./web_src/views/[!index]*.hbs")
+        .partials("./web_src/views/components/*.hbs")
+        .helpers("./web_src/helpers/**/*.js")
         .data({
           projectSlug: "image-tools",
           title: "Image Tools",
           layout: false,
         })
-        .data("./src/data/**/*.{js,json}")
+        .data("./web_src/data/**/*.{js,json}")
     )
     .pipe(rename("index.html"))
     .pipe(gulp.dest(BUILDDIR));
@@ -44,13 +44,13 @@ function compile_page(resolve) {
 }
 
 function move_images(resolve) {
-  gulp.src("./src/images/**/*").pipe(gulp.dest(BUILDDIR));
+  gulp.src("./web_src/images/**/*").pipe(gulp.dest(BUILDDIR));
   resolve();
 }
 
 function combine_js(resolve) {
   gulp
-    .src("src/js/**/*.js")
+    .src("web_src/js/**/*.js")
     .pipe(sourcemaps.init())
     .pipe(
       babel({
@@ -88,7 +88,7 @@ function defaultTask(cb) {
 }
 
 gulp.task("watch", function () {
-  gulp.watch("./src/**/*", defaultTask);
+  gulp.watch("./web_src/**/*", defaultTask);
 });
 
 exports.default = defaultTask;
