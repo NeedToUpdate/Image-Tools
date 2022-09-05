@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms as transforms
 from src.models.modnet import MODNet
+import sys
 
 class ImageToolbox():
 
@@ -65,7 +66,10 @@ class ImageToolbox():
             image = np.repeat(image, 3, axis=2)
         elif image.shape[2] == 4:
             image = image[:, :, 0:3]
-        foreground = np.dstack((image, np.asarray(matte).astype(np.uint8)))
+        if self.filetype == 'JPEG':
+            foreground = image*np.stack([np.asarray(matte).astype(np.uint8)>0]*3,2)
+        else:
+            foreground = np.dstack((image, np.asarray(matte).astype(np.uint8)))
         return Image.fromarray(np.uint8(foreground))
 
     def remove_background(self, image):
@@ -206,9 +210,16 @@ if __name__ == '__main__':
 
     if torch.cuda.is_available():
         modnet = modnet.cuda()
-        weights = torch.load('web/pretrained/modnet_photographic_portrait_matting.ckpt')
+        if getattr(sys, 'frozen', False):
+            weights = torch.load(os.path.join(sys._MEIPASS,'pretrained/modnet_photographic_portrait_matting.ckpt'))
+        else:
+            weights = torch.load('pretrained/modnet_photographic_portrait_matting.ckpt')
     else:
-        weights = torch.load('web/pretrained/modnet_photographic_portrait_matting.ckpt', map_location=torch.device('cpu'))
+        if getattr(sys, 'frozen', False):
+            weights = torch.load(os.path.join(sys._MEIPASS,'pretrained/modnet_photographic_portrait_matting.ckpt'), map_location=torch.device('cpu'))
+        else:
+            weights = torch.load('pretrained/modnet_photographic_portrait_matting.ckpt', map_location=torch.device('cpu'))
+
     modnet.load_state_dict(weights)
     modnet.eval()
 

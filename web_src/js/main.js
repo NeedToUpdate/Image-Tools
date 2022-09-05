@@ -27,6 +27,7 @@ function refreshImages() {
   eel.get_images()(setImages);
 }
 function startConversion() {
+  if (allImages.length === 0) return;
   document.getElementById("convert-btn").classList.add("disabled");
   document.getElementById("inputs-box").style.height = "85vmin";
   document.getElementById("loading-bar").style.opacity = "";
