@@ -104,14 +104,14 @@ document.getElementById("compression").addEventListener("input", (ev) => {
   document.getElementById("compression_text").innerText = text;
   changeParam("compression", ev.target.value);
 });
-document.getElementById("strip_exif").addEventListener("input", (ev) => {
+document.getElementById("strip_exif").addEventListener("change", (ev) => {
   changeParam("strip_exif", ev.target.checked);
 });
 document.getElementById("filetype").value = "png";
 document.getElementById("filetype").addEventListener("change", (ev) => {
   changeParam("filetype", ev.target.value);
 });
-document.getElementById("remove_bg").addEventListener("input", (ev) => {
+document.getElementById("remove_bg").addEventListener("change", (ev) => {
   changeParam("remove_bg", ev.target.checked);
 });
 document.getElementById("convert-btn").addEventListener("click", startConversion);

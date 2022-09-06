@@ -226,4 +226,4 @@ if __name__ == '__main__':
     TOOLBOX.im_transform = im_transform
     TOOLBOX.modnet = modnet
 
-    eel.start('./ui/index.html', size=(600,600))
+    eel.start('./ui/index.html', mode='default',port=9999, size=(600,600))
