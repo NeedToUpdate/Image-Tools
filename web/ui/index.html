@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script language="javascript" type="text/javascript" src="../eel.js"></script>
+    <link rel="stylesheet" href="main.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Image Tools</title>
+  </head>
+  <body class="background full">
+    <div class="full flex">
+        <div class="inputs flex flex-col flex-1 gap-sm flex-center full">
+            <div id="inputs-box" class="inputs-box flex flex-col gap-sm">
+                <div class="flex flex-center description">
+                    <p id="image-desc"></p>
+                </div>
+                <div class="flex gap-md input-group flex-col">
+                    <label for="max_res">Max Resolution</label>
+                    <div class="flex gap-sm">
+                        <input type="range" id="max_res" value="2100" name="max_res" min="100" max="2100" step="100">
+                        <p id="max_res_text" class="value-text">None</p>
+                    </div>
+                </div>
+                <div class="flex gap-md input-group flex-col">
+                    <label for="compression">Compression</label>
+                    <div class="flex gap-sm">
+                        <input type="range" id="compression" value="95" name="compression" min="5" max="100" step="5">
+                        <p id="compression_text" class="value-text">95% (Quality)</p>
+                    </div>
+                </div>
+                <div class="flex gap-md align-center input-group">
+                    <label for="strip_exif">Remove Exif Data</label>
+                    <input type="checkbox" id="strip_exif" name="strip_exif" checked="true">
+                </div>
+                <div class="flex gap-md align-center input-group">
+                    <label for="filetype">Convert to filetype:</label>
+                    <select name="filetype" id="filetype">
+                            <option value="no conversion">no conversion</option>
+                            <option value="jpg">jpg</option>
+                            <option value="png">png</option>
+                            <option value="webp">webp</option>
+                    </select>
+                </div>
+                    <div class="flex gap-md align-center input-group">
+                    <label for="remove_bg">Remove Backgrounds (will be slow)</label>
+                    <input type="checkbox" id="remove_bg" name="remove_bg">
+                </div>
+                <div class="buttons flex flex-center gap-md">
+                    <button id="convert-btn" class="btn">Convert</button>
+                    <button id="refresh-btn" class="btn">Re-Scan</button>
+                </div>
+                <progress id="loading-bar" value="0" max="100">0%</progress>
+            </div>
+        </div>
+    </div>
+  </body>
+  <template id="imageTemplate">
+    <div class="image-box">
+      <image class="image" src="null" />
+    </div>  </template>
+  <script language="javascript" type="text/javascript" src="script.js"></script>
+</html>
