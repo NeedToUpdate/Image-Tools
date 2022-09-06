@@ -127,7 +127,6 @@ TOOLBOX = None
 @eel.expose
 def set_param(param:str, value):
     global TOOLBOX
-    print(param, value)
     if param == 'max_res':
         if value == 'None':
             TOOLBOX.max_res = None
@@ -170,7 +169,6 @@ def get_images():
 @eel.expose
 def convert(image):
     global TOOLBOX
-    print(image)
     TOOLBOX.convert(image)
 
 if __name__ == '__main__':
