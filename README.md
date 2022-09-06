@@ -1,3 +1,7 @@
+# Image Tools
+
+These are some basic tools to quickly change image filetype, resolution, quality, and the ability to remove their background (if the image is a photo of a person)
+
 ## Installation
 
 1. (optional) Create a python virtual env first
