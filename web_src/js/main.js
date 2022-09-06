@@ -26,31 +26,57 @@ function changeParam(param, value) {
 function refreshImages() {
   eel.get_images()(setImages);
 }
+let RUNNING = false;
+let CANCEL = false;
+let TOTAL = 0;
 function startConversion() {
   if (allImages.length === 0) return;
-  document.getElementById("convert-btn").classList.add("disabled");
+  if (RUNNING) {
+    CANCEL = true;
+    document.getElementById("convert-btn").classList.add("disabled");
+    return;
+  }
+  RUNNING = true;
+  document.getElementById("convert-btn").classList.add("cancel");
+  document.getElementById("convert-btn").innerText = "Cancel";
   document.getElementById("inputs-box").style.height = "85vmin";
   document.getElementById("loading-bar").style.opacity = "";
   document.getElementById("loading-bar").value = "0";
-  let total = 0;
   console.log(allImages);
-  let parts = 100 / allImages.length || 0;
-  allImages.forEach((im, i) => {
-    requestAnimationFrame(() => {
-      eel.convert(im)(() => {
-        total += parts;
-        console.log(total);
-        document.getElementById("loading-bar").value = total + "";
-        if (i == allImages.length - 1) {
-          document.getElementById("inputs-box").style.height = "75vmin";
-          document.getElementById("loading-bar").style.opacity = 0;
-          document.getElementById("loading-bar").value = "0";
-          document.getElementById("convert-btn").classList.remove("disabled");
-        }
-      });
-    });
+  requestAnimationFrame(() => {
+    convertImage(0);
   });
 }
+
+function reset() {
+  CANCEL = false;
+  RUNNING = false;
+  document.getElementById("convert-btn").innerText = "Convert";
+  document.getElementById("inputs-box").style.height = "75vmin";
+  document.getElementById("loading-bar").style.opacity = 0;
+  document.getElementById("loading-bar").value = "0";
+  document.getElementById("convert-btn").classList.remove("disabled");
+  TOTAL = 0;
+}
+
+function convertImage(int) {
+  let parts = 100 / allImages.length || 0;
+  if (CANCEL) {
+    reset();
+    return;
+  } else {
+    eel.convert(allImages[int])(() => {
+      TOTAL += parts;
+      document.getElementById("loading-bar").value = TOTAL + "";
+      if (int == allImages.length - 1) {
+        reset();
+      } else {
+        convertImage(int + 1);
+      }
+    });
+  }
+}
+
 document.getElementById("max_res").value = "2100";
 document.getElementById("max_res_text").innerText = "None";
 document.getElementById("max_res").addEventListener("input", (ev) => {

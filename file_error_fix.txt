@@ -1,0 +1,12 @@
+if you get a warning about files already existing, add 
+
+to_rem = [ 'torch._C', 'torch._C_flatbuffer']
+
+for val in to_rem:
+    for b in a.binaries:
+          nb = b[0]
+          if val in str(nb):
+                print("removed  " + b[0])
+                a.binaries.remove(b)
+
+to the .spec file

@@ -38,11 +38,11 @@ class ImageToolbox():
         if self.max_res and (im.width > self.max_res or im.height > self.max_res):
             ratio = im.width/im.height
             if im.width > im.height:
-                new_height = round(self.max_res)
-                new_width = round(self.max_res*ratio)
-            else:
                 new_width = round(self.max_res)
                 new_height = round(self.max_res/ratio)
+            else:
+                new_height = round(self.max_res)
+                new_width = round(self.max_res*ratio)
         imResize = im.resize((new_width, new_height), Image.Resampling.LANCZOS)
         new_name = name + (self.get_extension(self.filetype) if self.filetype is not None else e)
         if self.strip_exif:
@@ -70,6 +70,8 @@ class ImageToolbox():
             foreground = image*np.stack([np.asarray(matte).astype(np.uint8)>0]*3,2)
         else:
             foreground = np.dstack((image, np.asarray(matte).astype(np.uint8)))
+        if self.filetype is None:
+            self.filetype = 'PNG'
         return Image.fromarray(np.uint8(foreground))
 
     def remove_background(self, image):
